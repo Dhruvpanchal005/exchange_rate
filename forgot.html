@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="login-wrapper">
+      <form class="login-form" id="forgot-form">
+        <h2>Reset Password</h2>
+
+        <div class="input-group">
+          <input
+            type="email"
+            id="forgot-email"
+            placeholder="Enter Email"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <input
+            type="password"
+            id="new-password"
+            placeholder="New Password"
+            required
+          />
+        </div>
+
+        <button type="submit" class="login-btn">Update Password</button>
+
+        <p style="margin-top: 10px">
+          <a href="login.html" style="color: #2563eb">Back to Login</a>
+        </p>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("forgot-form");
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("forgot-email").value;
+          const newPassword = document.getElementById("new-password").value;
+
+          const response = await fetch(
+            "http://localhost:3005/api/forgot-password",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, newPassword }),
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert("Password Updated Successfully!");
+            window.location.href = "login.html";
+          } else {
+            alert(data.message);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
